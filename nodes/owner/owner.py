@@ -25,7 +25,10 @@ def create_owner(name, password, phone_number):
                            name=name, password=password, phone_number=phone_number)
     return True
 
-
+def get_owners():
+    with driver.session() as session:
+        nodes = session.run("match (n:owner) return n as owners").data()
+    return nodes
 
 
 # def add_available_time(start,end,worker_id):

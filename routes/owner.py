@@ -24,12 +24,19 @@ class AddAvailableTime(BaseModel):
     end: datetime
     owner_id: str
     worker_id: str
-@router.post("/owner")
+@router.post("/owners")
 def create_owner(owner_input: owner_model):
     if owner.create_owner(owner_input.name, owner_input.password, owner_input.phone_number):
         return {'message': "owner created successfully "}
     return {'message': "Phone Number already exists"}
-#
+
+@router.get('/owners')
+def show_all_owners():
+    return owner.get_owners()
+
+
+
+
 # @router.post('/add_blocked_time')
 # def add_blocked_time(input_data: AddAvailableTime):
 #     owner_node = nodes.node.find_node_by_id(input_data.owner_id)

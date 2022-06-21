@@ -30,16 +30,16 @@ def create_worker(name, phone_number, password, instagram_link):
     if owner.existence_of_owner(phone_number=phone_number) or existence_of_worker(phone_number=phone_number):
         return False
     with driver.session() as session:
-        session.run("create (worker:worker {id:apoc.create.uuid(), "
+        worker = session.run("create (worker:worker {id:apoc.create.uuid(), "
                     "created_at:datetime(), "
                     "name:$name, "
                     "phone_number:$phone_number, "
                     "password:$password, "
-                    "instagram_link:$instagram_link} )",
+                    "instagram_link:$instagram_link} ) return worker.id",
                     name=name, phone_number=phone_number, password=password, instagram_link=instagram_link)
-    return True
+        return worker.data()[0]['worker.id']
+    # return worker.data()
 
-#TODO:: create connect and dissconnet to saloon functions
 
 
 def reserve_worker(start,end,worker_id,customer_phone_number):
@@ -54,3 +54,10 @@ def reserve_worker(start,end,worker_id,customer_phone_number):
 
         session.run("match (n:worker {id:$worker_id}),(m:reserve {id:$reserve_id}) "
                     "create (n)-[r:reservation {created_at:datetime()}]->(m) ",worker_id=worker_id,reserve_id=reserve_id)
+
+
+
+def get_worker_by_saloon_id(saloon_id):
+    with driver.session() as session:
+        saloon_data = session.run("match (n:worker)-[]->(:saloon {id:$saloon_id}) return n as workers",saloon_id=saloon_id).data()
+        return saloon_data

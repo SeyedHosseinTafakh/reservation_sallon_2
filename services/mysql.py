@@ -26,3 +26,12 @@ def make_reservation(start,end,customer_phone,worker_id):
   cursor.execute(sql,values)
   mydb.commit()
 
+def get_reservation_by_by_worker_id(worker_id):
+  sql = "select * from reservation where worker_id=%s "
+  values = [worker_id]
+  cursor.execute(sql,values)
+  result = cursor.fetchall()
+  data = []
+  for each in result:
+    data.append(each)
+  return data

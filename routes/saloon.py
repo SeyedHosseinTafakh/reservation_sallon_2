@@ -10,7 +10,7 @@ class saloon_model(BaseModel):
     location:str
     owner_id:str
 
-@router.post('/saloon')
+@router.post('/saloons')
 def create_saloon(saloon_input:saloon_model):
     if saloon.create_saloon(name=saloon_input.name,
                          phone_number=saloon_input.phone_number,
@@ -20,5 +20,8 @@ def create_saloon(saloon_input:saloon_model):
         return {"message":"saloon created"}
     return {"message":"error: unknown owner_id"}
 
+@router.get('/saloons/{owner_id}')
+def get_saloon_by_owner_id(owner_id):
+    return saloon.get_saloon_by_owner(owner_id)
 
 

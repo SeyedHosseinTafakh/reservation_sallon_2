@@ -28,3 +28,14 @@ def create_saloon(name, phone_number, address, location, owner_id):
                            "(owner) - [:Created_at{Created_at:datetime()}] -> (saloon)",
                            name=name, phone_number=phone_number, address=address, location=location,owner_id=owner_id )
     return True
+
+def get_saloon_by_owner(owner_id):
+    with driver.session() as session:
+        nodes = session.run("match (n:owner {id:$id})-[]->(saloon:saloon ) return saloon", id=owner_id).data()
+        return nodes
+
+def get_saloon_workers(saloon_id):
+    with driver.session() as session:
+        nodes = session.run("match (n:saloon {id:$id})-[]->(workers:worker ) return workers", id=saloon_id).data()
+        return nodes
+
