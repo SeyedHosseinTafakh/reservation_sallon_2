@@ -30,7 +30,6 @@ def check_connection(first_node_id,second_node_id):
             x = list(i.values())
             x.append(i.type)
             con_list.append(x)
-        print(con_list)
     if connection:
         return True, con_list
     return False, None

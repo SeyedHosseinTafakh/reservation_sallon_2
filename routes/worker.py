@@ -40,7 +40,7 @@ def connect_worker_to_saloon(nodes_input:connect_worker_to_saloon):
     if not second_node[0]:
         return {"error":"saloon id is unknown"}
     connection = edge.check_connection(nodes_input.worker_id,nodes_input.saloon_id)
-    if connection:
+    if connection[0]:
         return {"error":"already existing connection"}
     edge.connect_nodes(first_node[1][0]['n']['id'],second_node[1][0]['n']['id'])
 

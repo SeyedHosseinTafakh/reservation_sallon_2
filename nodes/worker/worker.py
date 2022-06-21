@@ -40,3 +40,17 @@ def create_worker(name, phone_number, password, instagram_link):
     return True
 
 #TODO:: create connect and dissconnet to saloon functions
+
+
+def reserve_worker(start,end,worker_id,customer_phone_number):
+    with driver.session() as session:
+        reserve_id = session.run("create (reserve:reserve {id:apoc.create.uuid(), "
+                    "created_at:datetime(), "
+                    "started:$start, "
+                    "end:$end, "
+                    "customer_phone_number:$customer_phone_number}) RETURN reserve.id as id"
+                    , start=start, end=end, customer_phone_number=customer_phone_number)
+        reserve_id = reserve_id.data()[0]['id']
+
+        session.run("match (n:worker {id:$worker_id}),(m:reserve {id:$reserve_id}) "
+                    "create (n)-[r:reservation {created_at:datetime()}]->(m) ",worker_id=worker_id,reserve_id=reserve_id)
